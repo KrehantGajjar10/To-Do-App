@@ -71,30 +71,7 @@ Informative empty states with contextual actions for 5 specific scenarios:
 
 ## Application Screenshots
 
-> *Screenshot placeholder: Capture of the FocusList desktop and mobile interfaces.*
-
-```text
-+-----------------------------------------------------------------------------------+
-|  [Logo] FocusList                                               [Offline Ready]   |
-|                                                                                   |
-|  Make space for what matters.                                                     |
-|  Prioritize high-impact items, eliminate clutter, and track real-time progress.   |
-|  [ + New Task ]                                                                   |
-+-----------------------------------------------------------------------------------+
-|  [ Total Tasks: 3 ]        [ Pending Tasks: 2 ]        [ Completed Tasks: 1 ]     |
-+-----------------------------------------------------------------------------------+
-|  Add New Task                                                                     |
-|  [ What needs to be accomplished?                               ]                 |
-|  Priority: ( ) High  (*) Medium  ( ) Low                         [ Add Task ]     |
-+-----------------------------------------------------------------------------------+
-|  [ Search tasks...                                            ] [ Reset filters ] |
-|  Status: [ All | Active | Completed ]      Priority: [ All Priorities v ]         |
-+-----------------------------------------------------------------------------------+
-|  [ ] Review weekly product roadmap and design goals      [High]  1h ago  [Edit] [Del]
-|  [ ] Draft wireframes for FocusList dashboard in Figma   [Med]   2h ago  [Edit] [Del]
-|  [x] Organize workspace and clear desktop distractions   [Low]   Done    [Edit] [Del]
-+-----------------------------------------------------------------------------------+
-```
+![alt text](image.png)
 
 ---
 
