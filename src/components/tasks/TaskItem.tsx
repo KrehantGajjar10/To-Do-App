@@ -31,6 +31,15 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const editInputRef = useRef<HTMLInputElement>(null);
+  const deleteResetTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (deleteResetTimerRef.current !== null) {
+        window.clearTimeout(deleteResetTimerRef.current);
+      }
+    };
+  }, []);
 
   // Focus input on edit mode enter
   useEffect(() => {
@@ -84,8 +93,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     } else {
       setIsDeleting(true);
       // Auto-reset delete confirmation after 3 seconds if not confirmed
-      setTimeout(() => {
+      deleteResetTimerRef.current = window.setTimeout(() => {
         setIsDeleting(false);
+        deleteResetTimerRef.current = null;
       }, 3500);
     }
   };
@@ -192,7 +202,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
               }`}
             >
               {task.completed ? (
-                <Check className="h-3.5 w-3.5 stroke-[3]" />
+                <Check className="h-3.5 w-3.5 stroke-3" />
               ) : (
                 <span className="h-2 w-2 rounded-full bg-slate-300 opacity-0 transition-opacity group-hover/check:opacity-100" />
               )}
@@ -202,7 +212,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           {/* Title and Metadata */}
           <div className="min-w-0 flex-1 space-y-1.5">
             <p
-              className={`break-words text-sm font-medium leading-snug transition-colors ${
+              className={`wrap-break-word text-sm font-medium leading-snug transition-colors ${
                 task.completed
                   ? 'text-slate-500 line-through'
                   : 'text-slate-900'

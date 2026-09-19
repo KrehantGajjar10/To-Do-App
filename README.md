@@ -16,7 +16,7 @@ The application is frontend-only, requires no external databases or backend serv
 ## Features
 
 ### Task Management (CRUD)
-- **Create**: Add tasks with title validation (rejects empty or whitespace-only inputs), priority selection, and automatic trimming.
+- **Create**: Add tasks with title validation (rejects empty or whitespace-only inputs), a 250-character limit, priority selection, and automatic trimming.
 - **Toggle**: Mark tasks as completed or reactivate them with an accessible custom checkbox.
 - **Edit**: Inline editing for task titles and priority levels with full keyboard support (`Enter` to save, `Escape` to cancel).
 - **Delete**: Two-step safe deletion confirmation preventing accidental data loss.
@@ -155,7 +155,7 @@ The project includes the following scripts defined in `package.json`:
 ## Local Storage Persistence
 
 - **Storage Key**: `focuslist:tasks:v1`
-- **Schema Validation**: Every item retrieved from `localStorage` is validated at runtime by `isValidTask()` in `src/utils/storage.ts`. Any malformed or non-conforming items are safely filtered out.
+- **Schema Validation**: Every item retrieved from `localStorage` is validated at runtime by `isValidTask()` in `src/utils/storage.ts`. Any malformed or non-conforming items are safely filtered out, titles are normalized, and duplicate IDs are removed.
 - **Resilience**: If `localStorage` is blocked or unavailable (e.g., restricted private browsing modes), the application logs a warning and falls back gracefully to in-memory state without crashing.
 - **Data Privacy**: All task data remains strictly in your local browser storage. No network transmission or external data collection takes place.
 
@@ -169,6 +169,17 @@ The project includes the following scripts defined in `package.json`:
 - **ARIA Standards**: Employs `role="checkbox"`, `aria-checked`, `role="radiogroup"`, `role="status"`, and `aria-live="polite"` regions for screen-reader announcements.
 - **Color Independence**: Priority labels include text labels and hidden screen-reader text alongside color indicators.
 - **Reduced Motion**: Respects `prefers-reduced-motion: reduce` by dampening animations and transitions.
+- **Focus management**: Task creation and inline editing return focus to native controls, with visible keyboard focus indicators.
+
+### Testing
+
+Run the focused reliability suite with:
+
+```bash
+npm test
+```
+
+The tests cover title validation, combined filtering, statistics invariants, malformed persisted data, duplicate IDs, and storage restoration.
 
 ### Responsive Breakpoints
 - **Mobile (375px)**: Stacked single-column statistics, full-width inputs, and touch-friendly controls.

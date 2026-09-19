@@ -6,7 +6,7 @@ export const AppHeader: React.FC = () => {
     <header className="sticky top-0 z-30 w-full border-b border-slate-200/60 bg-white/75 backdrop-blur-md transition-all">
       <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3.5 sm:px-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-sm shadow-blue-500/20 ring-1 ring-black/5">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-blue-500 to-blue-600 text-white shadow-sm shadow-blue-500/20 ring-1 ring-black/5">
             <CheckCircle2 className="h-5 w-5" strokeWidth={2.5} />
           </div>
           <div>

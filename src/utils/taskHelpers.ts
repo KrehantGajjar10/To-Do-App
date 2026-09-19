@@ -1,5 +1,7 @@
 import type { Task, TaskStats, TaskFilterOptions } from '../types/task';
 
+export const MAX_TASK_TITLE_LENGTH = 250;
+
 export const calculateStats = (tasks: Task[]): TaskStats => {
   const total = tasks.length;
   let completed = 0;
@@ -67,7 +69,7 @@ export const validateTaskTitle = (
     };
   }
 
-  if (trimmed.length > 250) {
+  if (trimmed.length > MAX_TASK_TITLE_LENGTH) {
     return {
       isValid: false,
       error: 'Task title cannot exceed 250 characters.',

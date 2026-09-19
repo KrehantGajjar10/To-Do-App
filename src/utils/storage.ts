@@ -1,33 +1,7 @@
 import type { Task, Priority } from '../types/task';
+import { MAX_TASK_TITLE_LENGTH } from './taskHelpers';
 
 export const STORAGE_KEY = 'focuslist:tasks:v1';
-
-export const DEFAULT_TASKS: Task[] = [
-  {
-    id: 'task-initial-1',
-    title: 'Review weekly product roadmap and design goals',
-    priority: 'high',
-    completed: false,
-    createdAt: Date.now() - 3600000 * 4,
-    updatedAt: Date.now() - 3600000 * 4,
-  },
-  {
-    id: 'task-initial-2',
-    title: 'Draft wireframes for FocusList dashboard in Figma',
-    priority: 'medium',
-    completed: false,
-    createdAt: Date.now() - 3600000 * 2,
-    updatedAt: Date.now() - 3600000 * 2,
-  },
-  {
-    id: 'task-initial-3',
-    title: 'Organize workspace and clear desktop distractions',
-    priority: 'low',
-    completed: true,
-    createdAt: Date.now() - 3600000 * 8,
-    updatedAt: Date.now() - 3600000 * 1,
-  },
-];
 
 const isValidPriority = (val: unknown): val is Priority => {
   return val === 'high' || val === 'medium' || val === 'low';
@@ -42,16 +16,23 @@ export const isValidTask = (item: unknown): item is Task => {
     t.id.trim().length > 0 &&
     typeof t.title === 'string' &&
     t.title.trim().length > 0 &&
+    t.title.trim().length <= MAX_TASK_TITLE_LENGTH &&
     isValidPriority(t.priority) &&
     typeof t.completed === 'boolean' &&
     typeof t.createdAt === 'number' &&
-    !isNaN(t.createdAt) &&
+    Number.isFinite(t.createdAt) &&
+    t.createdAt >= 0 &&
     typeof t.updatedAt === 'number' &&
-    !isNaN(t.updatedAt)
+    Number.isFinite(t.updatedAt) &&
+    t.updatedAt >= 0
   );
 };
 
 export const isLocalStorageAvailable = (): boolean => {
+  if (typeof window === 'undefined' || !('localStorage' in window)) {
+    return false;
+  }
+
   try {
     const testKey = '__focuslist_storage_test__';
     window.localStorage.setItem(testKey, testKey);
@@ -64,16 +45,13 @@ export const isLocalStorageAvailable = (): boolean => {
 
 export const loadTasksFromStorage = (): Task[] => {
   if (!isLocalStorageAvailable()) {
-    console.warn('[FocusList] LocalStorage is unavailable. Using default in-memory state.');
-    return DEFAULT_TASKS;
+    return [];
   }
 
   try {
     const rawData = window.localStorage.getItem(STORAGE_KEY);
     if (rawData === null) {
-      // First visit: initialize with default sample tasks
-      saveTasksToStorage(DEFAULT_TASKS);
-      return DEFAULT_TASKS;
+      return [];
     }
 
     const parsed = JSON.parse(rawData);
@@ -83,10 +61,12 @@ export const loadTasksFromStorage = (): Task[] => {
     }
 
     // Filter and sanitize items to ensure every single task conforms to Task interface
-    const validTasks = parsed.filter(isValidTask);
-    return validTasks;
-  } catch (error) {
-    console.error('[FocusList] Failed to read or parse tasks from localStorage:', error);
+    const validTasks = parsed.filter(isValidTask).map((task) => ({
+      ...task,
+      title: task.title.trim(),
+    }));
+    return [...new Map(validTasks.map((task) => [task.id, task])).values()];
+  } catch {
     return [];
   }
 };
@@ -99,8 +79,7 @@ export const saveTasksToStorage = (tasks: Task[]): boolean => {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
     return true;
-  } catch (error) {
-    console.error('[FocusList] Failed to persist tasks to localStorage:', error);
+  } catch {
     return false;
   }
 };
