@@ -7,6 +7,24 @@ interface TaskFormProps {
   onAddTask: (title: string, priority: Priority) => boolean;
 }
 
+const PRIORITY_OPTIONS: { value: Priority; label: string; activeClass: string }[] = [
+  {
+    value: 'high',
+    label: 'High',
+    activeClass: 'bg-rose-500 text-white border-rose-600 shadow-2xs shadow-rose-500/20',
+  },
+  {
+    value: 'medium',
+    label: 'Medium',
+    activeClass: 'bg-amber-500 text-white border-amber-600 shadow-2xs shadow-amber-500/20',
+  },
+  {
+    value: 'low',
+    label: 'Low',
+    activeClass: 'bg-emerald-500 text-white border-emerald-600 shadow-2xs shadow-emerald-500/20',
+  },
+];
+
 export interface TaskFormRef {
   focusInput: () => void;
 }
@@ -53,24 +71,6 @@ export const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(({ onAddTask }, r
       setErrorMessage(null);
     }
   };
-
-  const priorities: { value: Priority; label: string; activeClass: string }[] = [
-    {
-      value: 'high',
-      label: 'High',
-      activeClass: 'bg-rose-500 text-white border-rose-600 shadow-2xs shadow-rose-500/20',
-    },
-    {
-      value: 'medium',
-      label: 'Medium',
-      activeClass: 'bg-amber-500 text-white border-amber-600 shadow-2xs shadow-amber-500/20',
-    },
-    {
-      value: 'low',
-      label: 'Low',
-      activeClass: 'bg-emerald-500 text-white border-emerald-600 shadow-2xs shadow-emerald-500/20',
-    },
-  ];
 
   return (
     <section aria-label="Create Task" className="rounded-2xl border border-slate-200/70 bg-white/80 p-5 backdrop-blur-md shadow-xs transition-all">
@@ -129,23 +129,27 @@ export const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(({ onAddTask }, r
               aria-labelledby="priority-selector-label"
               className="inline-flex rounded-xl border border-slate-200/80 bg-slate-100/70 p-0.5"
             >
-              {priorities.map((item) => {
+              {PRIORITY_OPTIONS.map((item) => {
                 const isSelected = priority === item.value;
                 return (
-                  <button
+                  <label
                     key={item.value}
-                    type="button"
-                    role="radio"
-                    aria-checked={isSelected}
-                    onClick={() => setPriority(item.value)}
-                    className={`cursor-pointer rounded-lg px-3 py-1 text-xs font-medium transition-all ${
+                    className={`inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1 text-xs font-medium transition-all focus-within:outline-2 focus-within:outline-offset-1 focus-within:outline-blue-600 ${
                       isSelected
                         ? item.activeClass
                         : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
                     }`}
                   >
-                    {item.label}
-                  </button>
+                    <input
+                      type="radio"
+                      name="task-priority"
+                      value={item.value}
+                      checked={isSelected}
+                      onChange={() => setPriority(item.value)}
+                      className="h-3.5 w-3.5 cursor-pointer accent-blue-600"
+                    />
+                    <span>{item.label}</span>
+                  </label>
                 );
               })}
             </div>

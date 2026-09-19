@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  Check,
   Pencil,
   Trash2,
   X,
@@ -18,12 +17,12 @@ interface TaskItemProps {
   onDelete: (id: string) => void;
 }
 
-export const TaskItem: React.FC<TaskItemProps> = ({
+export const TaskItem = React.memo(function TaskItem({
   task,
   onToggle,
   onUpdate,
   onDelete,
-}) => {
+}: TaskItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
   const [editPriority, setEditPriority] = useState<Priority>(task.priority);
@@ -183,30 +182,23 @@ export const TaskItem: React.FC<TaskItemProps> = ({
       ) : (
         /* Normal Display Mode */
         <div className="flex items-start gap-3.5 p-4">
-          {/* Custom Accessible Checkbox */}
+          {/* Native checkbox keeps keyboard and assistive technology behavior consistent. */}
           <div className="pt-0.5 shrink-0">
-            <button
-              type="button"
-              role="checkbox"
-              aria-checked={task.completed}
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => onToggle(task.id)}
               aria-label={
                 task.completed
                   ? `Mark "${task.title}" as pending`
                   : `Mark "${task.title}" as completed`
               }
-              onClick={() => onToggle(task.id)}
-              className={`group/check flex h-5 w-5 cursor-pointer items-center justify-center rounded-lg border transition-all duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
+              className={`h-5 w-5 cursor-pointer rounded-md border transition-all duration-150 accent-emerald-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
                 task.completed
-                  ? 'border-emerald-500 bg-emerald-500 text-white shadow-2xs shadow-emerald-500/20'
-                  : 'border-slate-300 bg-white hover:border-slate-400 hover:bg-slate-50'
+                  ? 'border-emerald-500 shadow-2xs shadow-emerald-500/20'
+                  : 'border-slate-300 bg-white hover:border-slate-400'
               }`}
-            >
-              {task.completed ? (
-                <Check className="h-3.5 w-3.5 stroke-3" />
-              ) : (
-                <span className="h-2 w-2 rounded-full bg-slate-300 opacity-0 transition-opacity group-hover/check:opacity-100" />
-              )}
-            </button>
+            />
           </div>
 
           {/* Title and Metadata */}
@@ -287,4 +279,4 @@ export const TaskItem: React.FC<TaskItemProps> = ({
       )}
     </li>
   );
-};
+});

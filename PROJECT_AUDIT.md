@@ -27,8 +27,8 @@ This audit is based on the repository state inspected on September 19, 2026. The
 
 | Severity | Finding | Recommendation | Verification |
 | --- | --- | --- | --- |
-| High | There was no test script in `package.json`. | Add Vitest with jsdom and focused tests for business rules and persistence edge cases. | `npm test` reports 3 files and 8 passing tests. |
-| Medium | Full browser-flow coverage is not yet automated. | Add user-event component tests for add, edit, toggle, delete, and keyboard flows in a follow-up pass. | Current gap is documented; utility/storage tests pass. |
+| High | There was no test script in `package.json`. | Add Vitest with jsdom and focused tests for business rules and persistence edge cases. | `npm test` reports 4 files and 10 passing tests. |
+| Medium | Full browser-flow coverage is not yet automated. | Continue adding component tests for delete and keyboard flows. | Utility, storage, form, and task-row tests pass; browser smoke testing covered creation at 375px. |
 
 ## Accessibility (ARIA & Keyboard Navigation)
 
@@ -47,5 +47,5 @@ This audit is based on the repository state inspected on September 19, 2026. The
 
 ## Remaining Risks
 
-- No browser automation or Lighthouse run was available in this session, so Core Web Vitals and deployed accessibility behavior are not claimed as passed.
-- Component-level interaction tests are a worthwhile next increment beyond the current pure-logic and storage coverage.
+- Browser smoke testing verified task creation and no horizontal overflow at 375px; Lighthouse and deployed accessibility behavior are not claimed as passed.
+- Delete and full keyboard-flow component tests remain a worthwhile next increment.

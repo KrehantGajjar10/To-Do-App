@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Priority } from '../../types/task';
 
 interface PriorityBadgeProps {
@@ -6,28 +7,30 @@ interface PriorityBadgeProps {
   className?: string;
 }
 
-export const PriorityBadge: React.FC<PriorityBadgeProps> = ({
+const PRIORITY_CONFIG = {
+  high: {
+    label: 'High',
+    dotColor: 'bg-rose-500',
+    badgeClass: 'bg-rose-50/80 text-rose-700 border-rose-200/70',
+  },
+  medium: {
+    label: 'Medium',
+    dotColor: 'bg-amber-500',
+    badgeClass: 'bg-amber-50/80 text-amber-700 border-amber-200/70',
+  },
+  low: {
+    label: 'Low',
+    dotColor: 'bg-emerald-500',
+    badgeClass: 'bg-emerald-50/80 text-emerald-700 border-emerald-200/70',
+  },
+} as const;
+
+export const PriorityBadge = React.memo(function PriorityBadge({
   priority,
   size = 'sm',
   className = '',
-}) => {
-  const config = {
-    high: {
-      label: 'High',
-      dotColor: 'bg-rose-500',
-      badgeClass: 'bg-rose-50/80 text-rose-700 border-rose-200/70',
-    },
-    medium: {
-      label: 'Medium',
-      dotColor: 'bg-amber-500',
-      badgeClass: 'bg-amber-50/80 text-amber-700 border-amber-200/70',
-    },
-    low: {
-      label: 'Low',
-      dotColor: 'bg-emerald-500',
-      badgeClass: 'bg-emerald-50/80 text-emerald-700 border-emerald-200/70',
-    },
-  }[priority];
+}: PriorityBadgeProps) {
+  const config = PRIORITY_CONFIG[priority];
 
   const sizeClasses =
     size === 'sm'
@@ -46,4 +49,4 @@ export const PriorityBadge: React.FC<PriorityBadgeProps> = ({
       <span className="sr-only">Priority: {config.label}</span>
     </span>
   );
-};
+});

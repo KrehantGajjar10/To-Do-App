@@ -80,7 +80,6 @@ Informative empty states with contextual actions for 5 specific scenarios:
 ```text
 TodoListKG/
 ├── public/
-│   └── favicon.svg
 ├── src/
 │   ├── components/
 │   │   ├── common/
@@ -148,6 +147,7 @@ The project includes the following scripts defined in `package.json`:
 | `npm run dev` | `vite` | Starts local development server with Hot Module Replacement (HMR) |
 | `npm run build` | `tsc -b && vite build` | Runs TypeScript type-checking and builds production assets |
 | `npm run lint` | `eslint .` | Lints source files for code style and syntax rules |
+| `npm test` | `vitest run` | Runs utility, storage, and component reliability tests |
 | `npm run preview` | `vite preview` | Locally previews the compiled production build |
 
 ---

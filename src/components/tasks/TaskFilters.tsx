@@ -15,6 +15,19 @@ interface TaskFiltersProps {
   totalCount: number;
 }
 
+const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'active', label: 'Active' },
+  { value: 'completed', label: 'Completed' },
+];
+
+const PRIORITY_OPTIONS: { value: PriorityFilter; label: string }[] = [
+  { value: 'all', label: 'All Priorities' },
+  { value: 'high', label: 'High' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'low', label: 'Low' },
+];
+
 export const TaskFilters: React.FC<TaskFiltersProps> = ({
   searchQuery,
   onSearchChange,
@@ -27,19 +40,6 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
   resultCount,
   totalCount,
 }) => {
-  const statusOptions: { value: StatusFilter; label: string }[] = [
-    { value: 'all', label: 'All' },
-    { value: 'active', label: 'Active' },
-    { value: 'completed', label: 'Completed' },
-  ];
-
-  const priorityOptions: { value: PriorityFilter; label: string }[] = [
-    { value: 'all', label: 'All Priorities' },
-    { value: 'high', label: 'High' },
-    { value: 'medium', label: 'Medium' },
-    { value: 'low', label: 'Low' },
-  ];
-
   return (
     <div className="space-y-3 rounded-2xl border border-slate-200/60 bg-white/75 p-4 backdrop-blur-md shadow-2xs">
       {/* Search Bar & Reset */}
@@ -90,7 +90,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
             aria-label="Filter tasks by completion status"
             className="inline-flex rounded-xl border border-slate-200/80 bg-slate-100/60 p-0.5"
           >
-            {statusOptions.map((opt) => {
+            {STATUS_OPTIONS.map((opt) => {
               const isSelected = statusFilter === opt.value;
               return (
                 <button
@@ -124,7 +124,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
               onChange={(e) => onPriorityChange(e.target.value as PriorityFilter)}
               className="cursor-pointer appearance-none rounded-xl border border-slate-200/80 bg-white py-1 pl-7 pr-8 text-xs font-medium text-slate-700 shadow-2xs hover:border-slate-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             >
-              {priorityOptions.map((opt) => (
+              {PRIORITY_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
                 </option>
@@ -137,7 +137,11 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
         </div>
 
         {/* Live Filtered Results Count */}
-        <div className="text-xs text-slate-500 flex items-center gap-1.5">
+        <div
+          className="text-xs text-slate-500 flex items-center gap-1.5"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           <span>
             Showing <strong className="font-semibold text-slate-800">{resultCount}</strong> of{' '}
             <strong className="font-semibold text-slate-800">{totalCount}</strong> tasks
